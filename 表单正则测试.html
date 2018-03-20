@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			ul {
+				padding: 0;
+				list-style: none;
+			}
+			#form label {
+				display: inline-block;
+				width: 3rem;
+				text-align:justify;
+				text-align-last:justify;
+				-moz-text-align-last:justify;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<ul id="form" >
+			<li>
+				<label>用户名</label>：
+				<input type="text"  />
+			</li>
+			<li>
+				<label>密码</label>：
+				<input type="text"  />
+			</li>
+			<li>
+				<label>姓名</label>：
+				<input type="text"  />
+			</li>
+			<li>
+				<label>年龄</label>：
+				<input type="text"  />
+			</li>
+			<li>
+				<label>邮箱</label>：
+				<input type="text"  />
+			</li>
+			<li>
+				<label>地址</label>：
+				<input type="text"  />
+			</li>
+					
+		</ul>
+		<script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			window.onload = function(){
+				var form = document.getElementById('form');
+				var inp = form.getElementsByTagName('input');
+				
+				for (var i=0; i<inp.length; i++) {
+					var value = inp[i].value;
+					inp[i].index =i;
+					inp[i].onchange =function(){
+							change.call(this,this.index)
+						}
+					
+				}
+				function change(index){
+					if(this.value.length == 0 || this.value.match(/^\s+$/g)){
+						alert('输入为空，或都是空格')
+					}else if (index ==0 && !this.value.match(/^\w{5,20}$/g)){
+						alert('请输入5-20位的字母或数字或下划线')
+					}else if( index == 1 && this.value.match(/[\u4E00-\u9FA5]/i)){
+						alert('不能输入中文')
+					}else if(index ==2 && !this.value.match(/^[\u4e00-\u9fa5]*$/)){
+						alert('只能是中文')
+					}else if (index ==3 && !this.value.match(/^(?:[1-9]\d|100)$/)){
+						alert('年龄只能是10-100的数字')
+					}else if( index == 4 && !this.value.match(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/)){
+						alert('请输入正确的邮箱')
+					}else if( index == 5 && this.value.length >50){
+						alert('请输入50个字内的地址')
+					}
+				}
+				
+			}
+		</script>
+	</body>
+</html>

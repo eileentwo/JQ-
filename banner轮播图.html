@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<style type="text/css">
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			img {
+				border: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.wrap {
+				width: 500px;
+				height: 500px;
+				border: 1px solid #000; 
+				position: relative;
+				margin: 0 auto;
+			}
+			
+			
+			a {
+				width: 50px;
+				height: 50px;
+				text-align: center;
+				font:bold 40px/50px "微软雅黑";
+				text-decoration: none;
+				color: #fff;
+				background-color: rgba(255,0,255,0.3);
+				border-radius: 50%;
+				position: absolute;
+				top: 15px;
+				z-index: 999;
+			}
+			.prev {
+				left: 10px;
+			}
+			
+			.next {
+				right: 10px;
+			} 
+			
+			.wrap .active {
+				background-color:rgba(255,0,255,1);
+			}
+			.wrap .hover {
+				box-shadow: 0 0 3px red;
+			}
+			.inner{
+				width:500px;
+				position: relative;
+			}
+			
+			.inner ul {
+				position: absolute;
+				top: 3px;
+			}
+			.inner div{
+				width: 365px;
+				height: 86px;
+				position: absolute;
+				left: 70px;
+				overflow: hidden;
+				
+			}
+			.inner li {
+				float: left;
+				padding:0 5px;
+			}
+			.inner li img{
+				width: 80px;
+				height: 80px;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				var $oUl =$('#wrap').find('ul');
+				var $aLi = $('#wrap').find('li');
+				var $oImg = $('#wrap').find('.img');
+				var $aimg = $oUl.find('img');
+				var $prev = $('#wrap').find('.prev');
+				var $next = $('#wrap').find('.next');
+				var $len = $aLi.length;
+				var num=0;
+				var $timer = null;
+				var liW = $aLi.eq(0).outerWidth();
+				var W =liW*$len;
+				
+				$oUl.css('width',W); 
+				$oImg.attr('src','img/1.png');
+				$aimg.eq(0).attr('class','hover');
+				
+				console.log($oUl.outerWidth())
+				
+				$aLi.mouseover(function(){
+					var i =$(this).index();
+					
+					$oImg.attr('src','img/'+(i+1)+'.png');
+					$aimg.attr('class','');
+					$aimg.eq(i).attr('class','hover');
+					
+					num =i;
+				});
+				
+				$next.mouseover(function(){
+					$(this).addClass('active');
+				})
+				$next.mouseout(function(){
+					$(this).removeClass('active');
+				})
+				$prev.mouseover(function(){
+					$(this).addClass('active');
+				})
+				$prev.mouseout(function(){
+					$(this).removeClass('active');
+				})
+				
+				$next.click(function(){
+					num++;
+					if(num>$len-1){//顺序式轮播
+						num=$len-1
+					}
+//					num=num%5;//循环式的轮播
+					$aimg.attr('class','');
+					$aimg.eq(num).attr('class','hover');
+					$oImg.attr('src','img/'+(num+1)+'.png');
+					$("#wrap").ulScroll();
+				})
+				$prev.click(function(){
+					num--;
+//					num=(num+5)%5;//循环式的轮播
+					if(num==-1){
+						num=0
+					}
+					$aimg.attr('class','');
+					$aimg.eq(num).attr('class','hover');
+					$oImg.attr('src','img/'+(num+1)+'.png');
+					$("#wrap").ulScroll();
+				})
+				$.fn.ulScroll = function(){
+					if(num<$len- 2){
+						$oUl.animate({'marginLeft':(-liW+3 )*(num-2?0:(num-2)) });
+					}
+					if(num>=$len- 2){
+						$oUl.animate({'marginLeft':(-liW+3 )*($len-4) });
+					}
+					
+				}
+				
+				
+			})
+		
+		</script>
+	</head>
+	<body>
+		<div class="wrap" id="wrap">
+			<img class="img" src=""/>
+			<div class="inner">
+				<div>
+					<ul class="list" id="obj">
+						<li><img src="img/1.png"/></li>
+						<li><img src="img/2.png"/></li>
+						<li><img src="img/3.png"/></li>
+						<li><img src="img/4.png"/></li>
+						<li><img src="img/5.png"/></li>
+					</ul>
+				</div>
+				<a href="javascript:;" class="prev active">&lt;</a>
+				<a href="javascript:;" class="next">&gt;</a>
+			</div>
+		</div>
+	</body>
+</html>

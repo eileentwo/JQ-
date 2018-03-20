@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <style type="text/css">
+            ul {
+                position: relative;
+            }
+            
+            li {
+                list-style: none;
+                position: relative;
+                margin: 10px;
+            }
+            
+            span {
+                margin-right: 10px;
+            }
+        </style>
+        <script type="text/javascript">
+            window.onload = function() {
+                var oUl = document.getElementById("ul1");
+                
+                for(var i = 0; i < oUl.children.length; i++) {
+                    oUl.children[i].children[1].index = i;
+                    
+                    oUl.children[i].children[1].onclick = function() {
+                        var preelem = this.parentNode.previousElementSibling || this.parentNode.previousSibling;
+                        	console.log(this.parentNode)
+                        if(preelem.nodeType==1) {
+                            oUl.insertBefore(this.parentNode, preelem);
+                        } else {
+                            alert('到顶了');
+                        }
+                    }
+                    oUl.children[i].children[2].onclick = function() {
+                        var nextelem = this.parentNode.nextElementSibling || this.parentNode.nextSibling;
+                        var nextnextelem = nextelem.nextElementSibling || nextelem.nextSibling;
+                        if(nextelem.nodeType==1) {
+                            if(nextnextelem) {
+                                oUl.insertBefore(this.parentNode, nextnextelem);
+                            } else {
+                                oUl.appendChild(this.parentNode);
+                            }
+
+                        } else {
+                            alert('到底了');
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <ul id="ul1">
+            <li>
+                <span>内容一</span>
+                <input type="button" name="" id="11" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容二</span>
+                <input type="button" name="" id="22" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容三</span>
+                <input type="button" name="" id="33" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容四</span>
+                <input type="button" name="" id="44" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容五</span>
+                <input type="button" name="" id="55" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容六</span>
+                <input type="button" name="" id="66" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+            <li>
+                <span>内容七</span>
+                <input type="button" name="" id="77" value="上移" />
+                <input type="button" name="" id="" value="下移" />
+            </li>
+        </ul>
+    </body>
+
+</html> 

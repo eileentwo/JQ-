@@ -1,0 +1,143 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title></title> 
+  <script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css"> 
+   *{padding:0;margin:0;}
+	li{list-style:none;}
+	body{margin:10px;}
+	.wrap {
+		margin: 50px auto;
+		width: 1134px;
+		height: 437px;
+		position: relative;
+		overflow: hidden;
+	}
+	
+	.pic {
+		width: 679px;
+		height: 437px;
+		cursor: pointer;
+	}
+	
+	.pic1 {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: pink;
+	}
+	
+	.pic2 {
+		position: absolute;
+		top: 0;
+		left: 679px;
+		z-index: 3;
+		background-color: springgreen;
+	}
+	
+	.pic3 {
+		position: absolute;
+		top: 0;
+		left: 770px;
+		z-index: 5;
+		background-color: deeppink;
+	}
+	
+	.pic4 {
+		position: absolute;
+		top: 0;
+		left: 861px;
+		z-index: 7;
+		background-color: palegoldenrod;
+	}
+	
+	.pic5 {
+		position: absolute;
+		top: 0;
+		left: 952px;
+		z-index: 9;
+		background-color: gold;
+	}
+	
+	.pic6 {
+		position: absolute;
+		top: 0;
+		left: 1043px;
+		z-index: 11;
+		background-color: green;
+	}
+  </style> 
+</head> 
+<body> 
+  <div class="wrap">
+		<div class="pic1 pic"></div>
+		<div class="pic2 pic"></div>
+		<div class="pic3 pic"></div>
+		<div class="pic4 pic"></div>
+		<div class="pic5 pic"></div>
+		<div class="pic6 pic"></div>
+	</div>
+<script type="text/javascript"> 
+	$(function(){
+	var wrap = $('.wrap');//所有图片所处的容器
+	var pic = $('.pic');//各图片所在的div容器
+	//设置部分初始值与计算
+	var timeId = null;//记录如片轮换的定时器，自动轮换与鼠标控制切换时用到
+	var distance = 91;//记录相邻图片错开的距离
+	var Now = 0;//记录当前显示的第几张图片，此处为默认值0
+	var mouse = 0;//记录鼠标停留在第几张图片上
+	var wrapOutwidth = wrap.width();//记录所有图片最外层容器的宽度，计算即将显示第一张图片时的，其他图片移动的距离
+	/*图片自动轮换的方法主体*/
+	
+	function autoSlide(){
+		//计算第几张图片开始运动
+		if(Now == pic.size()-1){
+			Now = 0;
+		}else{
+			Now ++;
+		}
+		if(Now == 0){
+			for(var i=pic.size()-1;i>0;i--){
+				pic.eq(i).animate({'left':wrapOutwidth-(pic.size()-i)*distance+'px'},2000);
+			}
+		}else{
+			pic.eq(Now).animate({'left':distance*Now+'px'},2000);
+		}
+	}
+	
+	function mouseSlide(){
+		if(mouse > Now){
+			for(var i= Now+1;i<=mouse;i++){
+				pic.eq(i).stop().animate({'left':distance*i+'px'},2000);
+			}
+			
+			Now = mouse;
+		}else{
+			for(var i= Now;i>mouse;i--){
+				pic.eq(i).stop().animate({'left':wrapOutwidth-(pic.size()-i)*distance+'px'},2000);
+			}
+			Now = mouse;
+		}
+	}
+	
+//	timeId = setInterval(autoSlide,3000);
+	
+	pic.hover(function(){
+		clearInterval(timeId);
+		mouse = $(this).index();
+		if(mouse != Now){
+			mouseSlide();
+		}		
+	},function(){
+		timeId = setInterval(autoSlide,3000);
+	}).bind('click',function(){
+		Now = $(this).index();
+	});
+	
+});
+</script>
+</body> 
+</html> 

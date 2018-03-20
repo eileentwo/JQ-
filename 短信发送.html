@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			input {
+				border: none;
+				outline: medium;
+			}
+			.wrap {
+				width: 280px;
+				height: 570px;
+				background-size: contain;
+				position: relative;
+			}
+			.p1 {
+				width: 223px;
+				height: 355px;
+				padding:5px 5px 52px;
+				border: 2px solid #ddd;
+				border-radius: 5px;
+				overflow: auto;
+				position: absolute;
+				top: 60px;
+				left: 20px;
+			}
+			.content {
+				width: 233px;
+				height: 38px;
+				padding-top: 4px;
+				background-color: #f7f7f7;
+				border-top:2px solid #bdcec6;
+				position: absolute;
+				bottom: 80px;
+				left: 22px;
+			}
+		
+			.lab {
+				float: left;
+				width: 30px;
+				height: 30px;
+				margin: 0 10px;
+				padding: 1px;
+				border: 1px solid #ded6e7;
+				vertical-align: top;
+			}
+			img {
+				width: 30px;
+				height: 30px;
+				border: none;
+				vertical-align: top;
+			}
+			.text {
+				float: left;
+				width: 130px;
+				height: 30px;
+				padding: 1px;
+				border: 1px solid #ded6e7;
+			}
+			.btn1 {
+				float: left;
+				border: none;
+				margin-top: 5px;
+				background-color: transparent;
+			}
+			
+			.message {
+				display: inline-block;
+				max-width: 60%;
+				background-color: #00A734;
+				border-radius: 3px;
+				margin-bottom: 5px;
+				font-size: 12px;
+				color: #fff;
+				padding: 4px;
+				text-align: left;
+			}
+			
+			.message2 {
+				display: inline-block;
+				max-width: 70%;
+				background-color: #ccc;
+				border-radius: 3px;
+				margin-bottom: 5px;
+				font-size: 12px;
+				color: #000;
+				padding: 4px;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function (){
+//				var oP = document.getElementById('p1');
+//					var oLab = document.getElementById('lab');
+//					var oImg = document.getElementById('img');
+//				var oText = document.getElementById('text');
+//				var oBtn = document.getElementById('btn1');
+//				
+//				var arrUrl = ['img/2.png','img/3.png','img/4.png','img/5.png'];
+//				
+//				var num =0;
+//				var onOff =true;
+//				
+//				oImg.onclick = function (){
+//					num++;
+//					if(num==arrUrl.length){
+//						num= 0;
+//					};
+//					oImg.src=arrUrl[num];
+//					if (num==0){
+//						onOff = true;
+//					}else {
+//						onOff = false;
+//					};
+//				};
+//				oBtn.onclick = function(){
+//					if(oText.value == ''){
+//						alert('发送消息不能为空！');
+//					}
+//					if (onOff) {
+//						oP.innerHTML ="<div class= 'fr'>" + "<span class='message'>" +  '说：' + oText.value + "</span>"+ oLab.innerHTML + '<br/>' + "</div>" + oP.innerHTML;
+//						oText.value = '';
+//					} else {
+//						oP.innerHTML ="<div class= 'fl'>" + oLab.innerHTML + "<span class='message2'>" +  '说：' + oText.value + "</span>" + '<br/>' + "</div>" + oP.innerHTML;
+//						oText.value = '';
+//					};
+//				};
+			};
+			var $len= 0;
+			
+			$(function(){
+				var onOff = true;
+				$('a').on('click',function(){
+					$len++;
+					if($len>=5){
+						$len=1
+					}
+					$('img').attr('src','img/'+$len+'.png');
+					if($len==0){
+						onOff = true;
+					}else{
+						onOff = false;
+					}
+				})
+				
+				
+				$('.btn1').on('click',function(){
+					var option =$('<option></option>');
+					var text =  $('.text').val();
+					var url= $('#img').attr('src');
+					
+					option.addClass('fr');
+					var len = text.length;
+					option.css('width',len*15 +'px');
+					option.css('marginLeft',150- len*15 +'px');
+					
+					
+					$(option).append('<img src='img/1.png' />',text);
+						
+//					<div class= 'fr'><span class='message'>说：oText.value +</span></div>
+					
+					
+					if($('.text').val()==''){
+						alert('发送消息不能为空！');
+					}
+					if(onOff){
+						console.log(1)
+						$('.p1').append(option);
+						$('.text').val('');
+					}else{
+						$('.p1').append(option2)
+						$('.text').val();
+					}
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<p id="p1" class="p1"></p>
+			<div class="content">
+				<a id="lab" class="lab" >
+					<img id="img" src="img/2.png"/>
+				</a>
+				<input type="text" id="text" class="text" />
+				<input type="button" id="btn1" class="btn1" value="发送" />
+			</div>
+		</div>
+	</body>
+</html>

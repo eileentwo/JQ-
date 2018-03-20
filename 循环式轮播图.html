@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<style type="text/css">
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			img {
+				border: 0;
+				width: 100%;
+				height: 100%;
+			}
+			.wrap {
+				width: 500px;
+				height: 500px;
+				border: 1px solid #000; 
+				position: relative;
+				margin: 0 auto;
+			}
+			.list {
+				width: 200px;
+				position: absolute;
+				bottom: 40px;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			.list li {
+				float: left;
+				width: 20px;
+				height: 20px;
+				border: 1px solid #F9C;
+				background-color: rgba(255,100,100,0.3);
+				border-radius: 50%;
+				margin-right: 10px;
+				position: relative;
+			}
+			
+			.list div {
+				display: none;
+				width: 120px;
+				height: 120px;
+				position: absolute;
+				top: -125px;
+				left: 0;
+			}
+			.list img {
+				width: 100px;
+				height: 100px;
+				border: 5px solid #fff;
+				position: absolute;
+				top: 0;
+				left: -45px;
+				z-index: 999999;
+			}
+			.list span {
+				width: 0px;
+				height: 0px;
+				border: 10px solid transparent;
+				border-color:white transparent transparent transparent ; 
+				position: absolute;
+				bottom: -10px;
+				left:0%;
+				z-index: 9999999;
+			}
+			a {
+				width: 50px;
+				height: 50px;
+				text-align: center;
+				font:bold 40px/50px "微软雅黑";
+				text-decoration: none;
+				color: #fff;
+				background-color: rgba(255,0,255,0.3);
+				border-radius: 50%;
+				position: absolute;
+				top: 40%;
+				z-index: 999;
+			}
+			.prev {
+				left: 10px;
+			}
+			
+			.next {
+				right: 10px;
+			} 
+			
+			.wrap .active {
+				background-color:rgba(255,0,255,1);
+			}
+			.wrap a:hover,
+			.wrap li:hover {
+				background-color: rgba(255,100,100,1);
+			}
+			.list .aimg{
+				display: block;
+			}
+			
+			.wrap li {
+				position: relative;
+			}
+			.wrap li img{
+				display: none;
+				width: 50px;
+				height: 50px;
+				position: absolute;
+				top: -70px;
+				left: -25px;
+			}
+		</style>
+		<!--<script type="text/javascript">
+			$(function(){
+				var $oUl =$('#wrap').find('ul');
+				var $aLi = $('#wrap').find('li');
+				var $oImg = $('#wrap').find('.img');
+				var $aimg = $oUl.find('img');
+				var $prev = $('#wrap').find('.prev');
+				var $next = $('#wrap').find('.next');
+				var $len = $aLi.length;
+				var num=0;
+				var $timer = null;
+				
+				$aLi.eq(0).attr('class','active');
+				$oImg.attr('src','img/1.png');
+				
+				$aLi.mouseover(function(){
+					var This = this;
+					var i =$(this).index();
+					
+					$aimg.css('display','none');
+					$aimg.eq(i).css('display','block');
+					
+					$timer = setTimeout(function(){
+						$aLi.attr('class','');
+						$(This).attr('class','active');
+						$oImg.attr('src','img/'+(i+1)+'.png');
+						
+					},100)
+				});
+				$aLi.mouseout(function(){
+					$aimg.css('display','none');
+					clearInterval($timer)
+				})
+				
+				$next.mouseover(function(){
+					$(this).addClass('active');
+				})
+				$next.mouseout(function(){
+					$(this).removeClass('active');
+				})
+				$prev.mouseover(function(){
+					$(this).addClass('active');
+				})
+				$prev.mouseout(function(){
+					$(this).removeClass('active');
+				})
+				
+				$next.click(function(){
+					num++;
+					num=num%5;
+					$aLi.eq(num).addClass("active").siblings().removeClass("active");
+					$oImg.attr('src','img/'+(num+1)+'.png');
+				})
+				$prev.click(function(){//循环式的轮播
+					num--;
+					num=(num+5)%5;
+					$aLi.eq(num).addClass("active").siblings().removeClass("active");
+					$oImg.attr('src','img/'+(num+1)+'.png');
+				})
+				
+			})
+			
+			
+		</script>
+	-->
+	</head>
+	<body>
+		<div class="wrap" id="wrap">
+			<a href="javascript:;" class="prev">&lt;</a>
+			<a href="javascript:;" class="next">&gt;</a>
+			<img class="img" src=""/>
+			<ul class="list" id="obj"></ul>
+		</div>
+		
+		<script type="text/javascript">
+			window.onload = function(){
+				var wrap = document.getElementById('wrap'),
+					prev = document.getElementsByTagName('a')[0],
+					next = document.getElementsByTagName('a')[1],
+					img = document.getElementsByTagName('img')[0],
+					ul = document.getElementsByTagName('ul')[0];
+				var srcArr= ['img/1.png',"img/2.png","img/3.png","img/4.png","img/5.png"];
+				var aLi = document.getElementsByTagName('li');
+				var num=0;
+				var str='';
+				
+				for (var i=0;i<srcArr.length;i++) {
+					str +='<li></li>';
+				};
+				ul.innerHTML = str;
+				aLi[0].className='active';
+				img.src=srcArr[0];
+				
+				function active(num){
+					for (var i=0;i<srcArr.length;i++) {
+						aLi[i].className='';
+						aLi[num].className='active';
+					};
+				}
+				next.onclick = function(){
+					num++;
+					if(num>4){
+						num=0;
+					}
+					img.src=srcArr[num];
+					active(num);
+				};
+				prev.onclick = function(){
+					num--;
+					if(num<0){
+						num=4
+					}
+					img.src=srcArr[num];
+					active(num);
+				};
+				
+				for (var i=0;i<srcArr.length;i++) {
+					aLi[i].index=i;
+					aLi[i].onmouseover=function(){
+						num = this.index;
+						img.src=srcArr[num];
+						active(num);
+					}
+				};
+			}
+		</script>
+	</body>
+</html>

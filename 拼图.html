@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				background-color: #f1f1f1;
+			}
+			#wrap {
+				width: 800px;
+				height: 600px;
+				border:1px solid #000;
+				border-radius:10px;
+				position:relative;
+				left: 900px;
+				top: 100px;
+				background-color: #ccc;
+			}
+			#wrap div {
+				width: 100px;
+				height: 100px;
+				box-sizing:border-box;
+				float: left;
+				border:1px solid #000;
+				background-image:url(img/bg.png);
+				background-size:800px 600px;
+				position:relative;
+				left: 0;
+				top: 0;
+				text-align: center;
+				line-height: 100px;
+				z-index:0;
+				font-size: 50px;
+			}
+			#standard {
+				position:absolute;
+				left: 50px;
+				top: 100px;
+				width: 800px;
+				height: 600px;
+				background-image:url(img/bg.png);
+				background-size:800px 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="standard"></div>
+		<div id="wrap"></div>
+		<script type="text/javascript">
+			var wrap = document.getElementById('wrap');
+			var divs = wrap.getElementsByTagName('div');
+			var arr = [];
+			var gameOver = false;
+			
+			for (var i=0; i<48; i++){
+				var box = document.createElement('div');
+				wrap.appendChild(box);
+				arr.push( -i%8*100 + 'px ' +  -Math.floor(i/8)*100 + 'px');
+			}
+			
+			arr.sort(function(){
+				return Math.random()-0.5;
+			})
+			
+			for ( var i=0; i<divs.length;i++){
+				divs[i].index = i;
+				divs[i].style.backgroundPosition = arr[i];
+				divs[i].onmousedown = function (e){
+					var originX = e.clientX;
+					var originY = e.clientY;
+					var n = this.index;
+					this.style.zIndex = 999;
+					document.onmousemove = function(e){
+						divs[n].style.left = e.clientX - originX + 'px';
+						divs[n].style.top = e.clientY - originY + 'px';
+						
+						for ( var i=0; i<divs.length; i++){
+							divs[i].style.opacity = 1;
+						}
+						if( crash(divs[n]) ){
+							crash(divs[n]).style.opacity = 0.5;
+						}
+						
+					}
+					document.onmouseup = function (){
+						document.onmousemove = null;
+						
+						if( crash(divs[n])){
+							var temp = crash(divs[n]).style.backgroundPosition;
+							crash(divs[n]).style.backgroundPosition = divs[n].style.backgroundPosition ;
+							divs[n].style.backgroundPosition =temp;
+						}
+						for ( var i=0; i<divs.length; i++ ){
+							divs[i].style.opacity =1;
+						}
+						divs[n].style.left = '0px';
+						divs[n].style.top = '0px';
+						divs[n].style.zIndex = 0;
+						
+						for ( var i=0; i<divs.length; i++){
+							if( divs[i].style.backgroundPosition != -i%8*100 + 'px ' + -Math.floor(i/8)*100 +'px'){
+								return;
+							}
+						}
+						if( !gameOver ) {
+							setTimeout(function win(){
+								alert('游戏结束，你赢了');
+								gameOver = true;
+							},100)
+						}
+					}
+					return false;
+				}
+			}
+			function crash(obj){
+				var pointX = obj.offsetLeft +50;
+				var pointY = obj.offsetTop +50;
+				for ( var i=0; i<divs.length; i++ ){
+					if(i==obj.index )continue;
+					if ( divs[i].offsetLeft<pointX && divs[i].offsetLeft+100>pointX && divs[i].offsetTop<pointY && divs[i].offsetTop+100>pointY){
+						return divs[i];
+					}
+				}
+				return false;
+			}
+		</script>
+	</body>
+</html>

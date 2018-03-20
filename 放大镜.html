@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.little {
+				width: 200px;
+				height: 200px;
+				border: 1px solid #000;
+				position: relative;
+				top: 0;
+				left: 0;
+			}
+			.little img {
+				width: 200px;
+				height: 200px;
+			}
+			.little span {
+				display: none;
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background-color: rgba(100,225,225,0.4);
+			}
+			.big {
+				display: none;
+				width: 200px;
+				height: 200px;
+				position: absolute;
+				top: 10px;
+				left: 240px;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="drag" style="margin-left: 500px;">
+			<div class="little">
+				<img src="img/4.jpg"/>
+				<span></span>
+			</div>
+			<div class="big">
+				<img src="img/4.jpg"/>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$.fn.magnifying = function(){
+					var that = $(this),
+						$showbox = that.find('.little'),
+						$Drag =	$showbox.find('span'),
+						$Img =	$showbox.find('img'),
+						$show = that.find('.big'),
+						$bimg =	$show.find('img'),
+						scale = $show.width()/$Drag.width();
+						
+						
+					$showbox.mousemove(function(e){
+						$Drag.css('display','block');
+						$show.css('display','block');
+						
+						//如果正常图片位置偏移就用这方式
+						var	iX = e.pageX - $(this).offset().left - $Drag.width()/2, 
+							iY = e.pageY - $(this).offset().top - $Drag.height()/2,
+							maxX = $showbox.width() - $Drag.width(),
+							maxY = $showbox.height() - $Drag.height();
+							
+//							iX = iX > 0 ? iX : 0;
+//							iX = iX < maxX ? iX : maxX;
+//							iY = iY > 0 ? iY : 0;
+//							iY = iY < maxY ? iY : maxY;
+							
+							if(iX<0){
+								iX=0
+							}else if(iX>maxX){
+								iX=maxX
+							}
+							if(iY<0){
+								iY=0
+							}else if(iY>maxY){
+								iY=maxY
+							}
+							
+							
+							$Drag.css({left:iX + 'px',top:iY + 'px'});
+							$bimg.css({marginLeft:-scale*iX + 'px',marginTop:-scale*iY/4 + 'px'});
+							
+					});
+					$showbox.mouseout(function(){
+						$Drag.css('display','none');
+						$show.css('display','none');
+					})
+				} 
+				$('#drag').magnifying();
+			})
+		</script>
+	</body>
+</html>

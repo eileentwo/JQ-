@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<ul id="list">
+			<li>
+				<span></span>
+				<input type="button" value="上移" class="up" />
+				<input type="button" value="下移" class="down" />
+				<input type="button" value="置顶" class="top" />
+			</li>
+			<li>
+				<span></span>
+				<input type="button" value="上移" class="up" />
+				<input type="button" value="下移" class="down" />
+				<input type="button" value="置顶" class="top" />
+			</li>
+			<li>
+				<span></span>
+				<input type="button" value="上移" class="up" />
+				<input type="button" value="下移" class="down" />
+				<input type="button" value="置顶" class="top" />
+			</li>
+			<li>
+				<span></span>
+				<input type="button" value="上移" class="up" />
+				<input type="button" value="下移" class="down" />
+				<input type="button" value="置顶" class="top" />
+			</li>
+			<li>
+				<span></span>
+				<input type="button" value="上移" class="up" />
+				<input type="button" value="下移" class="down" />
+				<input type="button" value="置顶" class="top" />
+			</li>
+		</ul>
+		<script type="text/javascript">
+			$(function(){
+				$li = $('#list').find('li');
+				$span = $('#list').find('span');
+				$up = $('#list').find('.up');
+				$down =$('#list').find('.down');
+				$top =$('#list').find('.top');
+				$len = $down.length;
+				
+				x=$span.toArray();//toArray() 方法以数组的形式返回 jQuery 选择器匹配的元素。
+				
+				$li.each(function(){
+					i= $(this).index();
+					x[i].innerHTML =i+1;
+				})
+				$up.click(function(){//上移
+					var $pa = $(this).parents('li');
+					
+					if($pa.index() !=0 ){
+						$pa.fadeOut().fadeIn();//淡入淡出
+						$pa.prev().before($pa);
+					}
+					
+				})
+				
+				$down.click(function(){//下移
+					var $pa = $(this).parents('li');
+					
+					if($pa.index() !=$len -1 ){
+						$pa.fadeOut().fadeIn();//淡入淡出
+						$pa.next().after($pa);
+					}
+				})
+				$top.click(function(){//置顶
+					var $pa = $(this).parents('li');
+					
+					$pa.fadeOut().fadeIn();//淡入淡出
+					$('#list').prepend($pa);//prepend()方法在被选元素的开头（仍位于内部）插入指定内容。
+				})
+			})
+		</script>
+	</body>
+</html>

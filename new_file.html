@@ -1,0 +1,226 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title></title> 
+  <script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css"> 
+   *{padding:0;margin:0;}
+	li{list-style:none;}
+	body{margin:10px;}
+	
+	/* wrap */
+	.wrap {
+		margin: 50px auto;
+		width: 1134px;
+		height: 437px;
+		position: relative;
+		overflow: hidden;
+	}
+	
+	.pic {
+		width: 679px;
+		height: 437px;
+		cursor: pointer;
+	}
+	
+	.pic1 {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: pink;
+	}
+	
+	.pic_num1 {
+		width: 74px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 17px;
+		display: none;
+		background-color: red;
+	}
+	
+	.pic2 {
+		position: absolute;
+		top: 0;
+		left: 679px;
+		z-index: 3;
+		background-color: springgreen;
+	}
+	
+	.pic_num2 {
+		width: 74px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 17px;
+		background-color: red;
+	}
+	
+	.pic3 {
+		position: absolute;
+		top: 0;
+		left: 770px;
+		z-index: 5;
+		background-color: deeppink;
+	}
+	
+	.pic_num3 {
+		width: 74px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 17px;
+		background-color: red;
+	}
+	
+	.pic4 {
+		position: absolute;
+		top: 0;
+		left: 861px;
+		z-index: 7;
+		background-color: palegoldenrod;
+	}
+	
+	.pic_num4 {
+		width: 74px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 17px;
+		background-color: red;
+	}
+	
+	.pic5 {
+		position: absolute;
+		top: 0;
+		left: 952px;
+		z-index: 9;
+		background-color: gold;
+	}
+	
+	.pic_num5 {
+		width: 73px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 18px;
+		background-color: red;
+	}
+	
+	.pic6 {
+		position: absolute;
+		top: 0;
+		left: 1043px;
+		z-index: 11;
+		background-color: green;
+	}
+	
+	.pic_num6 {
+		width: 73px;
+		height: 79px;
+		position: absolute;
+		top: 40px;
+		left: 18px;
+		background-color: red;
+	}
+  </style> 
+</head> 
+<body> 
+  <div class="wrap">
+		<div class="pic1 pic">
+			<div class="pic_num1 pic_num">1</div>
+		</div>
+		<div class="pic2 pic">
+			<div class="pic_num2 pic_num">2</div>
+		</div>
+		<div class="pic3 pic">
+			<div class="pic_num3 pic_num">3</div>
+		</div>
+		<div class="pic4 pic">
+			<div class="pic_num4 pic_num">4</div>
+		</div>
+		<div class="pic5 pic">
+			<div class="pic_num5 pic_num">5</div>
+		</div>
+		<div class="pic6 pic">
+			<div class="pic_num6 pic_num">6</div>
+		</div>
+	</div>
+<script type="text/javascript"> 
+	$(function(){
+	var imgOuter = $('.wrap');//所有图片所处的容器
+	var imgDiv = $('.pic');//各图片所在的div容器
+	//设置部分初始值与计算
+	var timeId = null;//记录如片轮换的定时器，自动轮换与鼠标控制切换时用到
+	var edgeDistance = 91;//记录相邻图片错开的距离
+	var imgNow = 0;//记录当前显示的第几张图片，此处为默认值0
+	var imgMouse = 0;//记录鼠标停留在第几张图片上
+	var imgOuterWidth = imgOuter.width();//记录所有图片最外层容器的宽度，计算即将显示第一张图片时的，其他图片移动的距离
+/**********方法*************/
+
+	/*图片自动轮换的方法主体*/
+	function autoSlide(){
+		//计算第几张图片开始运动
+		if(imgNow == imgDiv.size()-1){
+			imgNow = 0;
+		}else{
+			imgNow ++;
+		}
+		
+		if(imgNow == 0){
+//			imgDiv.eq(imgNow).children().hide().siblings().children().show();			
+//			imgDiv.eq(imgNow).siblings().children().show();
+			
+			for(var i=imgDiv.size()-1;i>0;i--){
+				imgDiv.eq(i).animate({'left':imgOuterWidth-(imgDiv.size()-i)*edgeDistance+'px'},2000);
+			}
+		}else{
+//			imgDiv.eq(imgNow).children().hide().siblings().children().show();			
+//			imgDiv.eq(imgNow).siblings().children().show();
+			
+			imgDiv.eq(imgNow).animate({'left':edgeDistance*imgNow+'px'},2000);
+		}
+	}
+	
+	function mouseSlide(){
+		if(imgMouse > imgNow){
+			for(var i= imgNow+1;i<=imgMouse;i++){
+				
+//				imgDiv.eq(imgMouse).children().hide();
+//				imgDiv.eq(imgMouse).siblings().children().show();
+				
+				imgDiv.eq(i).stop().animate({'left':edgeDistance*i+'px'},2000);
+			}
+			
+			imgNow = imgMouse;
+		}else{
+			for(var i= imgNow;i>imgMouse;i--){
+//				imgDiv.eq(imgMouse).children().hide();
+//				imgDiv.eq(imgMouse).siblings().children().show();
+				imgDiv.eq(i).stop().animate({'left':imgOuterWidth-(imgDiv.size()-i)*edgeDistance+'px'},2000);
+			}
+			imgNow = imgMouse;
+		}
+	}
+	
+	timeId = setInterval(autoSlide,3000);
+	
+	imgDiv.hover(function(){
+		clearInterval(timeId);
+		imgMouse = $(this).index();
+		if(imgMouse != imgNow){
+			mouseSlide();
+		}		
+	},function(){
+		timeId = setInterval(autoSlide,3000);
+	}).bind('click',function(){
+		imgNow = $(this).index();
+	});
+	
+});
+</script>
+</body> 
+</html> 
